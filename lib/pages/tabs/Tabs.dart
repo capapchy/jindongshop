@@ -29,6 +29,7 @@ class _TabsState extends State<Tabs> {
               this._currentIndex = index;
             });
           },
+          fixedColor: Colors.red,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("首页")),
