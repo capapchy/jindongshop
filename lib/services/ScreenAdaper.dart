@@ -17,4 +17,7 @@ class ScreenAdaper {
   static getScreenWidth(){
     return ScreenUtil.screenWidthDp;
   }
+  static size(double value){
+    return ScreenUtil.getInstance().setSp(value);
+  }
 }

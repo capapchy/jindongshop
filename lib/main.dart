@@ -12,6 +12,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(initialRoute: '/', onGenerateRoute: onGenerateRoute);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/', 
+      onGenerateRoute: onGenerateRoute,
+      theme: ThemeData(
+        primaryColor: Colors.white
+      ),
+    );
   }
 }
