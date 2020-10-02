@@ -12,8 +12,14 @@ class Tabs extends StatefulWidget {
 
 class _TabsState extends State<Tabs> {
   int _currentIndex = 0;
+  PageController _pageController;
   // 跳转页面的列表
-  List _pageList = [HomePage(), CategoryPage(), CartPage(), UserPage()];
+  List<Widget> _pageList = [HomePage(), CategoryPage(), CartPage(), UserPage()];
+  @override
+  void initState(){
+    super.initState();
+    this._pageController=new PageController(initialPage: this._currentIndex);
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -21,12 +27,16 @@ class _TabsState extends State<Tabs> {
       appBar: AppBar(
         title: Text("京东商城"),
       ),
-      body: this._pageList[this._currentIndex],
+      body: PageView(
+        controller: this._pageController,
+        children: this._pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: this._currentIndex,
           onTap: (index) {
             setState(() {
               this._currentIndex = index;
+              this._pageController.jumpToPage(index);
             });
           },
           fixedColor: Colors.red,

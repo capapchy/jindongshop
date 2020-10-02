@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   // 轮播图
   List<FocusItemModel> _focusData=[];
   //才您喜欢
@@ -227,4 +227,9 @@ class _HomePageState extends State<HomePage> {
           ),
         );
   }
+
+  //保持页面状态
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
