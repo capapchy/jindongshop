@@ -21,12 +21,9 @@ class _TabsState extends State<Tabs> {
   }
 
   List<Widget> _pageList = [HomePage(), CategoryPage(), CartPage(), UserPage()];
-
   @override
   Widget build(BuildContext context) {
-
     ScreenAdaper.init(context);
-
     return Scaffold(
       appBar: _currentIndex!=3?AppBar(
         leading: IconButton(
@@ -53,7 +50,6 @@ class _TabsState extends State<Tabs> {
           ),
           onTap: (){
               Navigator.pushNamed(context, '/search');
-
           },
         ),
         actions: <Widget>[

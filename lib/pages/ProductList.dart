@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import '../services/ScreenAdaper.dart';
 import '../config/Config.dart';
-import 'package:dio/dio.dart';
 import '../model/ProductModel.dart';
 import '../widget/LoadingWidget.dart';
 
@@ -39,10 +39,19 @@ class _ProductListPageState extends State<ProductListPage> {
   ];
   //二级导航选中判断
   int _selectHeaderId = 1;  
+  //配置search搜索框的值
+  var _initKeywordsController=TextEditingController();
+  var _cid;
+  var _keywords;
 
   @override
   void initState(){
     super.initState();
+
+    this._cid=widget.arguments["cid"];
+    this._keywords=widget.arguments["keywords"];
+    //给search框复制
+    this._initKeywordsController.text=this._keywords;
     _getProductListData();
 
     _scrollController.addListener((){
@@ -58,8 +67,13 @@ class _ProductListPageState extends State<ProductListPage> {
     setState(() {
       this.flag=false;
     });
+    var api;
+    if(this._keywords==null){
+      api ='${Config.domain}api/plist?cid=${this._cid}&page=${this._page}&sort=${this._sort}&pageSize=${this._pageSize}';
+    }else{
+      api ='${Config.domain}api/plist?search=${this._keywords}&page=${this._page}&sort=${this._sort}&pageSize=${this._pageSize}';
+    }
     
-    var api ='${Config.domain}api/plist?cid=${widget.arguments["cid"]}&page=${this._page}&sort=${this._sort}&pageSize=${this._pageSize}';
     var result = await Dio().get(api);
     var productList=new ProductModel.fromJson(result.data);
     if(productList.result.length<this._pageSize){
@@ -257,9 +271,40 @@ class _ProductListPageState extends State<ProductListPage> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("商品列表"),
+          title: Container(            
+            child: TextField(
+              controller: this._initKeywordsController,
+              autofocus: false,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none)),
+              onChanged: (value){
+                  setState(() {
+                     this._keywords=value;
+                  });
+              },
+            ),
+            height: ScreenAdaper.height(68),
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(233, 233, 233, 0.8),
+                borderRadius: BorderRadius.circular(30)),
+          ),
           actions: <Widget>[
-            Text("")
+            InkWell(
+              child: Container(
+                height: ScreenAdaper.height(68),
+                width: ScreenAdaper.width(80),
+                child: Row(
+                  children: <Widget>[
+                    Text("搜索")
+                  ],
+                ),
+              ),
+              onTap: (){
+                this._subHeaderChange(1);
+              },
+            )
           ],
         ),
         endDrawer: Drawer(
